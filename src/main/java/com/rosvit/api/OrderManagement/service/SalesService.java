@@ -3,6 +3,7 @@ package com.rosvit.api.OrderManagement.service;
 import com.rosvit.api.OrderManagement.domain.Sales;
 import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
+import com.rosvit.api.OrderManagement.dto.sales.SalesInfoDTO;
 import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
 import com.rosvit.api.OrderManagement.repository.SalesRepository;
 import com.rosvit.api.OrderManagement.util.MapperClass;
@@ -19,12 +20,22 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
 
-    public List<AllSalesDTO> getAllSalesOfDay() {
-        return MapperClass.converter(salesRepository.allSalesByDay(), AllSalesDTO.class);
+    public SalesInfoDTO getAllSalesOfDay() {
+        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByDay(), AllSalesDTO.class));
+        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
+        salesInfoDTO.setTotal(total);
+
+        return salesInfoDTO;
     }
 
-    public List<AllSalesDTO> getAllSales() {
-        return MapperClass.converter(salesRepository.findAll(), AllSalesDTO.class);
+    public SalesInfoDTO getAllSales() {
+        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.findAll(), AllSalesDTO.class));
+        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
+        salesInfoDTO.setTotal(total);
+
+        return salesInfoDTO;
     }
 
     @Transactional

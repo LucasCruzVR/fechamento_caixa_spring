@@ -2,6 +2,7 @@ package com.rosvit.api.OrderManagement.controller;
 
 import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
+import com.rosvit.api.OrderManagement.dto.sales.SalesInfoDTO;
 import com.rosvit.api.OrderManagement.service.SalesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,13 @@ public class SalesController {
 
     @GetMapping("/day")
     @ResponseBody
-    public ResponseEntity<List<AllSalesDTO>> listAllSalesOfDay() {
+    public ResponseEntity<SalesInfoDTO> listAllSalesOfDay() {
         return ResponseEntity.ok().body(salesService.getAllSalesOfDay());
     }
 
     @GetMapping()
     @ResponseBody
-    public ResponseEntity<List<AllSalesDTO>> listAllSales() {
+    public ResponseEntity<SalesInfoDTO> listAllSales() {
         return ResponseEntity.ok().body(salesService.getAllSales());
     }
 
