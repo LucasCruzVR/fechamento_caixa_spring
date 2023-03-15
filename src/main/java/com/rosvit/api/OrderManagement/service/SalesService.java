@@ -12,6 +12,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,9 +21,18 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
 
-    public SalesInfoDTO getAllSalesOfDay() {
+    public SalesInfoDTO getAllSalesOfDay(LocalDate date) {
         SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByDay(), AllSalesDTO.class));
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByDay(date), AllSalesDTO.class));
+        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
+        salesInfoDTO.setTotal(total);
+
+        return salesInfoDTO;
+    }
+
+    public SalesInfoDTO getAllSalesOfMonth(String month, String year) {
+        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByMonth(month, year), AllSalesDTO.class));
         var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
         salesInfoDTO.setTotal(total);
 
