@@ -4,6 +4,7 @@ import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.SalesInfoDTO;
 import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
 import com.rosvit.api.OrderManagement.service.SalesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +38,13 @@ public class SalesController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createSales(@RequestBody CreateSalesDTO createSalesDTO) {
+    public ResponseEntity<HttpStatus> createSales(@RequestBody @Valid CreateSalesDTO createSalesDTO) {
         salesService.createSales(createSalesDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateSales(@PathVariable Long id, @RequestBody UpdateSalesDTO updateSalesDTO) {
+    public ResponseEntity<HttpStatus> updateSales(@PathVariable Long id, @RequestBody @Valid UpdateSalesDTO updateSalesDTO) {
         salesService.updateSales(id, updateSalesDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }

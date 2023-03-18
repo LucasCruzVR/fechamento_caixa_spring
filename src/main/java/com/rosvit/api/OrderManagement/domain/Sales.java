@@ -1,10 +1,12 @@
 package com.rosvit.api.OrderManagement.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
