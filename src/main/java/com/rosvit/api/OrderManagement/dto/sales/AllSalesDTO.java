@@ -1,20 +1,18 @@
 package com.rosvit.api.OrderManagement.dto.sales;
 
+import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class AllSalesDTO {
-
-    private Long id;
-    private Double value;
-    private Boolean paid;
-    private String description;
-    private LocalDate date;
+    @Digits(integer=10, fraction=2)
+    private Double total;
+    private List<SalesDTO> sales;
 }

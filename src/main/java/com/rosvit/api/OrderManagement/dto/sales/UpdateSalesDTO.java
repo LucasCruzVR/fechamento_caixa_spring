@@ -19,4 +19,5 @@ public class UpdateSalesDTO implements Serializable {
     private Double value;
     private Boolean paid;
     private String description;
+    private Boolean delivery;
 }

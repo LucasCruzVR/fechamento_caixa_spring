@@ -21,6 +21,7 @@ public class CreateSalesDTO implements Serializable {
     private Double value;
     private Boolean paid;
     private String description;
+    private Boolean delivery;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;

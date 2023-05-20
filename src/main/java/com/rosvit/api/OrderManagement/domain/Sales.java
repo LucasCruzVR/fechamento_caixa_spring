@@ -30,6 +30,7 @@ public class Sales implements Serializable {
     private Double value;
     private Boolean paid;
     private String description;
+    private Boolean delivery;
     private LocalDate date;
 
     public Long getId() {

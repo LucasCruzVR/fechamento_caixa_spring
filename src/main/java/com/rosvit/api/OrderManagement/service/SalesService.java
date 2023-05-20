@@ -1,9 +1,9 @@
 package com.rosvit.api.OrderManagement.service;
 
 import com.rosvit.api.OrderManagement.domain.Sales;
-import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
+import com.rosvit.api.OrderManagement.dto.sales.SalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
-import com.rosvit.api.OrderManagement.dto.sales.SalesInfoDTO;
+import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
 import com.rosvit.api.OrderManagement.repository.SalesRepository;
 import com.rosvit.api.OrderManagement.util.MapperClass;
@@ -20,27 +20,27 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
 
-    public SalesInfoDTO getAllSalesOfDay(LocalDate date) {
-        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByDay(date), AllSalesDTO.class));
+    public AllSalesDTO getAllSalesOfDay(LocalDate date) {
+        AllSalesDTO salesList = new AllSalesDTO();
+        salesList.setSales(MapperClass.converter(salesRepository.allSalesByDay(date), SalesDTO.class));
+        var total = salesList.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
+        salesList.setTotal(total);
+
+        return salesList;
+    }
+
+    public AllSalesDTO getAllSalesOfMonth(String month, String year) {
+        AllSalesDTO salesInfoDTO = new AllSalesDTO();
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByMonth(month, year), SalesDTO.class));
         var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
         salesInfoDTO.setTotal(total);
 
         return salesInfoDTO;
     }
 
-    public SalesInfoDTO getAllSalesOfMonth(String month, String year) {
-        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByMonth(month, year), AllSalesDTO.class));
-        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
-        salesInfoDTO.setTotal(total);
-
-        return salesInfoDTO;
-    }
-
-    public SalesInfoDTO getAllSales() {
-        SalesInfoDTO salesInfoDTO = new SalesInfoDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.findAll(), AllSalesDTO.class));
+    public AllSalesDTO getAllSales() {
+        AllSalesDTO salesInfoDTO = new AllSalesDTO();
+        salesInfoDTO.setSales(MapperClass.converter(salesRepository.findAll(), SalesDTO.class));
         var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
         salesInfoDTO.setTotal(total);
 
@@ -53,6 +53,7 @@ public class SalesService {
                 .date(createSalesDTO.getDate())
                 .description(createSalesDTO.getDescription())
                 .paid(createSalesDTO.getPaid())
+                .delivery(createSalesDTO.getDelivery())
                 .value(createSalesDTO.getValue())
                 .build();
         salesRepository.save(sales);
@@ -65,6 +66,7 @@ public class SalesService {
                 .description(updateSalesDTO.getDescription())
                 .paid(updateSalesDTO.getPaid())
                 .value(updateSalesDTO.getValue())
+                .delivery(updateSalesDTO.getDelivery())
                 .build();
         salesRepository.save(sales);
     }
@@ -78,6 +80,6 @@ public class SalesService {
     }
 
     private Sales getSales(Long id) {
-        return salesRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, "Sales not found"));
+        return salesRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, "Venda não encontrada"));
     }
 }

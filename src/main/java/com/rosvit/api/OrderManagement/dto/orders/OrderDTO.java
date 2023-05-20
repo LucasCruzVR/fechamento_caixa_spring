@@ -1,8 +1,6 @@
-package com.rosvit.api.OrderManagement.domain;
+package com.rosvit.api.OrderManagement.dto.orders;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,18 +10,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder(toBuilder = true)
-@Entity(name = "orders")
-public class Order implements Serializable {
-
+public class OrderDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(columnDefinition = "decimal(10,2)")
     private Double value;
     private String description;
     private LocalDate date;
