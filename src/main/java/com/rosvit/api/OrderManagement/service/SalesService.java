@@ -1,10 +1,8 @@
 package com.rosvit.api.OrderManagement.service;
 
 import com.rosvit.api.OrderManagement.domain.Sales;
-import com.rosvit.api.OrderManagement.dto.sales.SalesDTO;
-import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
-import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
-import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
+import com.rosvit.api.OrderManagement.dto.orders.OrderParametersDTO;
+import com.rosvit.api.OrderManagement.dto.sales.*;
 import com.rosvit.api.OrderManagement.repository.SalesRepository;
 import com.rosvit.api.OrderManagement.util.MapperClass;
 import lombok.RequiredArgsConstructor;
@@ -20,31 +18,13 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
 
-    public AllSalesDTO getAllSalesOfDay(LocalDate date) {
+    public AllSalesDTO getAllSalesOfDay(SalesParameterDTO salesParametersDTO) {
         AllSalesDTO salesList = new AllSalesDTO();
-        salesList.setSales(MapperClass.converter(salesRepository.allSalesByDay(date), SalesDTO.class));
-        var total = salesList.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
+        salesList.setSales(MapperClass.converter(salesRepository.allSalesByDate(salesParametersDTO.getStartDate(), salesParametersDTO.getEndDate()), SalesDTO.class));
+        var total = salesList.getSales().stream().mapToDouble(SalesDTO::getValue).sum();
         salesList.setTotal(total);
 
         return salesList;
-    }
-
-    public AllSalesDTO getAllSalesOfMonth(String month, String year) {
-        AllSalesDTO salesInfoDTO = new AllSalesDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.allSalesByMonth(month, year), SalesDTO.class));
-        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
-        salesInfoDTO.setTotal(total);
-
-        return salesInfoDTO;
-    }
-
-    public AllSalesDTO getAllSales() {
-        AllSalesDTO salesInfoDTO = new AllSalesDTO();
-        salesInfoDTO.setSales(MapperClass.converter(salesRepository.findAll(), SalesDTO.class));
-        var total = salesInfoDTO.getSales().stream().mapToDouble((sales) -> sales.getValue()).sum();
-        salesInfoDTO.setTotal(total);
-
-        return salesInfoDTO;
     }
 
     @Transactional

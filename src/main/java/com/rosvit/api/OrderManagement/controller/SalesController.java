@@ -1,7 +1,9 @@
 package com.rosvit.api.OrderManagement.controller;
 
+import com.rosvit.api.OrderManagement.dto.orders.OrderParametersDTO;
 import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.AllSalesDTO;
+import com.rosvit.api.OrderManagement.dto.sales.SalesParameterDTO;
 import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
 import com.rosvit.api.OrderManagement.service.SalesService;
 import jakarta.validation.Valid;
@@ -19,22 +21,10 @@ public class SalesController {
 
     private final SalesService salesService;
 
-    @GetMapping("/day")
+    @GetMapping("")
     @ResponseBody
-    public ResponseEntity<AllSalesDTO> listAllSalesOfDay(@RequestParam LocalDate date) {
-        return ResponseEntity.ok().body(salesService.getAllSalesOfDay(date));
-    }
-
-    @GetMapping("/month")
-    @ResponseBody
-    public ResponseEntity<AllSalesDTO> listAllSalesOfMonth(@RequestParam String month, @RequestParam String year) {
-        return ResponseEntity.ok().body(salesService.getAllSalesOfMonth(month, year));
-    }
-
-    @GetMapping("/all")
-    @ResponseBody
-    public ResponseEntity<AllSalesDTO> listAllSales() {
-        return ResponseEntity.ok().body(salesService.getAllSales());
+    public ResponseEntity<AllSalesDTO> listAllSalesOfDay(@RequestBody @Valid SalesParameterDTO salesParametersDTO) {
+        return ResponseEntity.ok().body(salesService.getAllSalesOfDay(salesParametersDTO));
     }
 
     @PostMapping

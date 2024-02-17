@@ -3,6 +3,7 @@ package com.rosvit.api.OrderManagement.controller;
 import com.rosvit.api.OrderManagement.dto.orders.AllOrderDTO;
 import com.rosvit.api.OrderManagement.dto.orders.AllOrderDTO;
 import com.rosvit.api.OrderManagement.dto.orders.OrderDTO;
+import com.rosvit.api.OrderManagement.dto.orders.OrderParametersDTO;
 import com.rosvit.api.OrderManagement.dto.sales.CreateSalesDTO;
 import com.rosvit.api.OrderManagement.dto.sales.UpdateSalesDTO;
 import com.rosvit.api.OrderManagement.service.OrderService;
@@ -22,10 +23,10 @@ public class OrdersController {
 
     private final OrderService orderService;
 
-    @GetMapping("/month")
+    @GetMapping("/")
     @ResponseBody
-    public ResponseEntity<AllOrderDTO> listAllSalesOfMonth(@RequestParam String month, @RequestParam String year) {
-        return ResponseEntity.ok().body(orderService.getAllOrdersOfMonth(month, year));
+    public ResponseEntity<AllOrderDTO> listAllSalesOfMonth(@RequestBody @Valid OrderParametersDTO orderParametersDTO) {
+        return ResponseEntity.ok().body(orderService.getAllOrders(orderParametersDTO));
     }
 
     @PostMapping

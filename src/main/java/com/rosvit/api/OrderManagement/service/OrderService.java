@@ -3,6 +3,7 @@ package com.rosvit.api.OrderManagement.service;
 import com.rosvit.api.OrderManagement.domain.Order;
 import com.rosvit.api.OrderManagement.dto.orders.AllOrderDTO;
 import com.rosvit.api.OrderManagement.dto.orders.OrderDTO;
+import com.rosvit.api.OrderManagement.dto.orders.OrderParametersDTO;
 import com.rosvit.api.OrderManagement.repository.OrderRepository;
 import com.rosvit.api.OrderManagement.util.MapperClass;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,10 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public AllOrderDTO getAllOrdersOfMonth(String month, String year) {
+    public AllOrderDTO getAllOrders(OrderParametersDTO orderParametersDTO) {
         AllOrderDTO orderList = new AllOrderDTO();
-        orderList.setOrderList(MapperClass.converter(orderRepository.allOrderByMonth(month, year), OrderDTO.class));
-        var total = orderList.getOrderList().stream().mapToDouble(order -> order.getValue()).sum();
+        orderList.setOrderList(MapperClass.converter(orderRepository.allOrderByDate(orderParametersDTO.getStartDate(), orderParametersDTO.getEndDate()), OrderDTO.class));
+        var total = orderList.getOrderList().stream().mapToDouble(OrderDTO::getValue).sum();
         orderList.setTotal(total);
         return orderList;
     }
