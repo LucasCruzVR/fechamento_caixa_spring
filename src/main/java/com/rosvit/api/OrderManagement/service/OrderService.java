@@ -11,15 +11,17 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public AllOrderDTO getAllOrders(OrderParametersDTO orderParametersDTO) {
+    public AllOrderDTO getAllOrders(LocalDate startDate, LocalDate endDate) {
         AllOrderDTO orderList = new AllOrderDTO();
-        orderList.setOrderList(MapperClass.converter(orderRepository.allOrderByDate(orderParametersDTO.getStartDate(), orderParametersDTO.getEndDate()), OrderDTO.class));
+        orderList.setOrderList(MapperClass.converter(orderRepository.allOrderByDate(startDate, endDate), OrderDTO.class));
         var total = orderList.getOrderList().stream().mapToDouble(OrderDTO::getValue).sum();
         orderList.setTotal(total);
         return orderList;

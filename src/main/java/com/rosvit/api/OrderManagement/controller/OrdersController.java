@@ -23,26 +23,25 @@ public class OrdersController {
 
     private final OrderService orderService;
 
-    @GetMapping("/")
-    @ResponseBody
-    public ResponseEntity<AllOrderDTO> listAllSalesOfMonth(@RequestBody @Valid OrderParametersDTO orderParametersDTO) {
-        return ResponseEntity.ok().body(orderService.getAllOrders(orderParametersDTO));
+    @GetMapping
+    public ResponseEntity<AllOrderDTO> listAllOrders(@RequestParam @Valid LocalDate startDate, LocalDate endDate) {
+        return ResponseEntity.ok().body(orderService.getAllOrders(startDate, endDate));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createSales(@RequestBody @Valid OrderDTO orderDTO) {
+    public ResponseEntity<HttpStatus> createOrders(@RequestBody @Valid OrderDTO orderDTO) {
         orderService.createOrder(orderDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateSales(@PathVariable Long id, @RequestBody @Valid OrderDTO orderDTO) {
+    public ResponseEntity<HttpStatus> updateOrders(@PathVariable Long id, @RequestBody @Valid OrderDTO orderDTO) {
         orderService.updateOrder(id, orderDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteSales(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteOrders(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

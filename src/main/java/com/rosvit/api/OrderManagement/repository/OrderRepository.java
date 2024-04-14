@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query(value = "SELECT * FROM Sales WHERE date >= :startDate AND date <= :endDate", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC", nativeQuery = true)
     List<Order> allOrderByDate(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
